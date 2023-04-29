@@ -33,6 +33,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class VeiculoControllerTest {
+    private final Veiculo veiculoBD = veiculoBD();
+    private final VeiculoDTO veiculoDTO = veiculoDTOgerado(veiculoBD);
+    
 
     @SpyBean
     private VeiculoService veiculoService;
@@ -72,8 +75,7 @@ class VeiculoControllerTest {
         Assertions.assertEquals(responseString, resultActual);
 
     }
-
-
+    
     @Test
     @DisplayName("Erro ao cadastrar veículo com placa inválida")
     void deveriaRetornarErroCadastrarVeiculoPlacaInvalida() throws Exception {
@@ -102,11 +104,10 @@ class VeiculoControllerTest {
     @DisplayName("Deletar veículo pela placa com sucesso")
     void deveriaDeletarVeiculoPelaPlacaSucesso() throws Exception {
 
-        Mockito.when(veiculoRepository.findByPlaca(Mockito.anyString())).thenReturn(Optional.of(veiculoBD()));
+        Mockito.when(veiculoRepository.findByPlaca(Mockito.anyString())).thenReturn(Optional.of(veiculoBD));
 
         MvcResult mvcResult = mockMvc.perform(delete("/veiculo/{placa}", "XYZ-4578")
-                        .contentType(MediaType.APPLICATION_JSON)
-                )
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
@@ -160,7 +161,7 @@ class VeiculoControllerTest {
 
         String result = mvcResult.getResponse().getContentAsString();
 
-        Response<VeiculoDTO> response = new Response<VeiculoDTO>("Sucesso", veiculoAtualizadoDTO());
+        Response<VeiculoDTO> response = new Response<>("Sucesso", veiculoAtualizadoDTO());
         String resultExpect = mapper.writeValueAsString(response);
 
         Assertions.assertEquals(resultExpect, result);
@@ -182,8 +183,7 @@ class VeiculoControllerTest {
                 .andDo(print());
 
     }
-
-
+    
     private static VeiculoDTO veiculoDTO(){
         VeiculoDTO veiculoDTO = new VeiculoDTO();
         veiculoDTO.setPlaca("XYZ-4578");
@@ -205,14 +205,19 @@ class VeiculoControllerTest {
     }
 
     private static Veiculo veiculoBD() {
-        Veiculo veiculo = new Veiculo();
-        veiculo.setId(1L);
-        veiculo.setPlaca("XYZ-4578");
-        veiculo.setModelo("F40");
-        veiculo.setMarca("FERRARI");
-        veiculo.setDisponivel(Boolean.TRUE);
-        veiculo.setDataFabricacao(LocalDate.parse("2000-01-01"));
-        return veiculo;
+        return Veiculo.builder()
+                .id(1L)
+                .placa("XYZ-4578")
+                .marca("FERRARI")
+                .modelo("F40")
+                .dataFabricacao(LocalDate.parse("2000-01-01"))
+                .disponivel(Boolean.TRUE)
+                .build();
+    }
+    
+    private static VeiculoDTO veiculoDTOgerado(Veiculo veiculo) {
+        VeiculoDTO veiculoDTO = VeiculoDTO.veiculoToDTO(veiculo);
+        return null;
     }
 
 }

@@ -16,11 +16,12 @@ public class Veiculo {
     private Long id;
     
     private String placa;
-    private String modelo;
     private String marca;
-    
-    private Boolean disponivel;
+    private String modelo;
     
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataFabricacao;
+    
+    private Boolean disponivel;
+    
 }

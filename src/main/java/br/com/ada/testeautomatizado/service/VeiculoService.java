@@ -1,12 +1,14 @@
 package br.com.ada.testeautomatizado.service;
 
 import br.com.ada.testeautomatizado.dto.VeiculoDTO;
+import br.com.ada.testeautomatizado.exception.VeiculoNaoEncontradoException;
 import br.com.ada.testeautomatizado.model.Veiculo;
 import br.com.ada.testeautomatizado.repository.VeiculoRepository;
 import br.com.ada.testeautomatizado.util.Response;
 import br.com.ada.testeautomatizado.util.ValidacaoPlaca;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +30,9 @@ public class VeiculoService {
     }
 
     public ResponseEntity<Response<Boolean>> deletarVeiculoPelaPlaca(String placa) {
-        return null;
+        this.veiculoRepository.delete(buscarVeiculoPelaPlaca(placa)
+                .orElseThrow(VeiculoNaoEncontradoException::new));
+        return ResponseEntity.ok().body(Response.<Boolean>builder().message("Sucesso").detail(Boolean.TRUE).build());
     }
 
     public ResponseEntity<Response<VeiculoDTO>> atualizar(VeiculoDTO veiculoDTO) {
