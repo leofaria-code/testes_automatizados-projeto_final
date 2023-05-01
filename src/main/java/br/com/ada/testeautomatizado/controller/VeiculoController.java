@@ -2,42 +2,49 @@ package br.com.ada.testeautomatizado.controller;
 
 
 import br.com.ada.testeautomatizado.dto.VeiculoDTO;
+import br.com.ada.testeautomatizado.model.Veiculo;
 import br.com.ada.testeautomatizado.service.VeiculoService;
 import br.com.ada.testeautomatizado.util.Response;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Slf4j
-@RestController
+@RestController //CRUD
 @RequestMapping("/veiculo")
 public class VeiculoController {
 
-    @Autowired
-    private VeiculoService veiculoService;
-
-
-    @GetMapping("/todos")
-    public ResponseEntity<Response<List<VeiculoDTO>>> listarTodos(){
-        return this.veiculoService.listarTodos();
+    private final VeiculoService veiculoService;
+    public VeiculoController(VeiculoService veiculoService) {
+        this.veiculoService = veiculoService;
     }
-
-    @PostMapping("/")
+    
+    @PostMapping("/")   //C - CREATE
     public ResponseEntity<Response<VeiculoDTO>> cadastrar(@RequestBody VeiculoDTO veiculoDTO) {
         return this.veiculoService.cadastrar(veiculoDTO);
     }
-
-    @DeleteMapping("/{placa}")
-    public ResponseEntity<Response<Boolean>> deletarVeiculoPelaPlaca(@PathVariable("placa") String placa) {
-        return this.veiculoService.deletarVeiculoPelaPlaca(placa);
+    
+    @GetMapping("/todos")   //R - READ
+    public ResponseEntity<Response<List<Veiculo>>> listarTodos(){
+        return this.veiculoService.listarTodos();
+    }
+    
+    @GetMapping("/{placa}")
+    public ResponseEntity<Response<Veiculo>> listarVeiculoPelaPlaca (@PathVariable("placa") String placa) {
+//        return null;
+        return this.veiculoService.listarPelaPlaca(placa);
     }
 
-    @PutMapping("/")
+    @PutMapping("/")    //U - UPDATE
     public ResponseEntity<Response<VeiculoDTO>> atualizar(@RequestBody VeiculoDTO veiculoDTO) {
         return this.veiculoService.atualizar(veiculoDTO);
+    }
+    
+    @DeleteMapping("/{placa}")  //D - DELETE
+    public ResponseEntity<Response<Boolean>> deletarVeiculoPelaPlaca(@PathVariable("placa") String placa) {
+        return this.veiculoService.deletarVeiculoPelaPlaca(placa);
     }
 
 }

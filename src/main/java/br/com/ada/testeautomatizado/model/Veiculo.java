@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "tb_veiculo")
-@Getter @Setter @Builder @ToString
+@Getter @Setter @Builder
 @NoArgsConstructor @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Veiculo {
@@ -16,11 +16,12 @@ public class Veiculo {
     private Long id;
     
     private String placa;
-    private String modelo;
     private String marca;
-    
-    private Boolean disponivel;
+    private String modelo;
     
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataFabricacao;
+    
+    private Boolean disponivel;
+    
 }
