@@ -7,7 +7,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 
-@Getter @Setter @Builder @ToString
+@Getter @Setter @Builder
 @NoArgsConstructor @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class VeiculoDTO {
@@ -32,7 +32,7 @@ public class VeiculoDTO {
     
     public static Veiculo dtoToVeiculo(VeiculoDTO veiculoDTO) {
         return Veiculo.builder()
-                .id(1L)
+//                .id(1L)
                 .placa(veiculoDTO.getPlaca())
                 .marca(veiculoDTO.getMarca())
                 .modelo(veiculoDTO.getModelo())

@@ -3,7 +3,7 @@ package br.com.ada.testeautomatizado.exception;
 public class VeiculoNaoEncontradoException extends RuntimeException {
 
     public VeiculoNaoEncontradoException() {
-        super("Veículo não encontrado na base de dados!");
+        super(" : Placa do Veiculo nao encontrada na base de dados!");
     }
 
 }

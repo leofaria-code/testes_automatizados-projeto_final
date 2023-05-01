@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "tb_veiculo")
-@Getter @Setter @Builder @ToString
+@Getter @Setter @Builder
 @NoArgsConstructor @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Veiculo {
