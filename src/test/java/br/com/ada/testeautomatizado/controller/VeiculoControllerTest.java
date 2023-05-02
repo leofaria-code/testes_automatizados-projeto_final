@@ -100,29 +100,31 @@ class VeiculoControllerTest {
         Assertions.assertEquals(responseExpected, resultActual);
 
     }
-
+    
     @Test   //R - READ.All: Sucesso
     @DisplayName("Retorna todos os veículos")
+    @SuppressWarnings("SpellCheckingInspection")
     public void deveriaListarVeiculosSucesso() throws Exception {
-
+        
         Mockito.when(veiculoRepository.findAll()).thenReturn(List.of(veiculoBD));
-
+        
         MvcResult mvcResult = mockMvc.perform(get("/veiculo/todos")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
         String resultActual = mvcResult.getResponse().getContentAsString();
-
+        
+        //noinspection SpellCheckingInspection
         List<Veiculo> veiculos = List.of(veiculoBD);
         Response<List<Veiculo>> responseTest = Response.<List<Veiculo>>builder()
                 .message("Sucesso")
                 .detail(veiculos)
                 .build();
         String responseExpected = mapper.writeValueAsString(responseTest);
-
+        
         Assertions.assertEquals(responseExpected, resultActual);
-
+        
     }
     
     @Test   //R - READ: Sucesso
@@ -218,8 +220,9 @@ class VeiculoControllerTest {
         
         String exceptionMSG = new VeiculoNaoEncontradoException().getMessage();
         
-        Response<Veiculo> responseTest = Response.<Veiculo>builder()
+        Response<VeiculoDTO> responseTest = Response.<VeiculoDTO>builder()
                 .message(veiculoDTO.getPlaca() + exceptionMSG)
+                .detail(veiculoDTO)
                 .build();
         String responseExpected = mapper.writeValueAsString(responseTest);
         
@@ -280,7 +283,7 @@ class VeiculoControllerTest {
     private static Veiculo veiculoBD() {
         return Veiculo.builder()
                 .id(1L)
-                .placa("XYZ-4578")
+                .placa("XYZ-4E78")
                 .marca("FERRARI")
                 .modelo("F40")
                 .dataFabricacao(LocalDate.parse("2000-01-01"))
@@ -288,17 +291,16 @@ class VeiculoControllerTest {
                 .build();
     }
     
-    private static VeiculoDTO veiculoDTOgerado(Veiculo veiculo) {
-        return VeiculoDTO.veiculoToDTO(veiculo);
+    private VeiculoDTO veiculoDTO(){
+        return veiculoDtoGerado(veiculoBD);
     }
     
-    private VeiculoDTO veiculoDTO(){
-        return veiculoDTOgerado(veiculoBD);
+    private static VeiculoDTO veiculoDtoGerado(Veiculo veiculo) {
+        return VeiculoDTO.veiculoToDTO(veiculo);
     }
     
     private VeiculoDTO veiculoAtualizadoDTO(){
         VeiculoDTO veiculoAtualizadoDTO = veiculoDTO;
-        assert veiculoAtualizadoDTO != null;
         veiculoAtualizadoDTO.setDisponivel(Boolean.FALSE);
         return veiculoAtualizadoDTO;
     }

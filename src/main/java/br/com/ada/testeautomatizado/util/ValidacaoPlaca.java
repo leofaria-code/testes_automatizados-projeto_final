@@ -5,13 +5,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ValidacaoPlaca {
-    public static final String REGEX_BRASIL_ANTIGA = "(^[A-Z]{3}-?\\d{4}$)";
-    public static final String REGEX_MERCOSUL_ATUAL = "(^[A-Z]{3}(\\d)(A-Z)(\\d{2})$)";
-    
+    private static final String REGEX_MERCOSUL_BRASIL = "(^[A-Z]{3}-?\\d[0-9A-Z]\\d{2}$)";
     private static boolean noMatches(String placa) {
-        boolean matchMercosul = placa.matches(REGEX_MERCOSUL_ATUAL);
-        boolean matchBrasil = placa.matches(REGEX_BRASIL_ANTIGA);
-        return !(matchMercosul||matchBrasil);
+        boolean matchTodas = placa.matches(REGEX_MERCOSUL_BRASIL);
+        return !(matchTodas);
     }
     
     public void isPlacaValida(String placa) {
