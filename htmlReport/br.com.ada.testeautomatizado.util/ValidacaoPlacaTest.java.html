@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ValidacaoPlacaTest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in projeto-final Coverage Results</a> &gt; <a href="index.source.html" class="el_package">br.com.ada.testeautomatizado.util</a> &gt; <span class="el_source">ValidacaoPlacaTest.java</span></div><h1>ValidacaoPlacaTest.java</h1><pre class="source lang-java linenums">package br.com.ada.testeautomatizado.util;
+
+import br.com.ada.testeautomatizado.exception.PlacaInvalidaException;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.Mockito;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+@ExtendWith(MockitoExtension.class)
+<span class="fc" id="L14">class ValidacaoPlacaTest {</span>
+
+    @Spy    // placas antigas e placas mercosul novas
+    private ValidacaoPlaca validacaoPlaca;
+    
+    @ParameterizedTest (name = &quot;Placa {index}: {arguments}&quot;)
+    @ValueSource(strings = {&quot;ABC-1234&quot;, &quot;ABC1234&quot;, &quot;ABC1C34&quot;, &quot;ABC-1C34&quot;})
+    @DisplayName(&quot;Validar PLACA sucesso&quot;)
+    void deveriaRetornarPlacaValida(String placa) {
+<span class="fc" id="L23">        validacaoPlaca.isPlacaValida(placa);</span>
+<span class="fc" id="L24">        Mockito.verify(validacaoPlaca).isPlacaValida(placa);</span>
+<span class="fc" id="L25">    }</span>
+    
+    @ParameterizedTest (name = &quot;Placa {index}: {arguments}&quot;)
+    @ValueSource(strings = {&quot;ABC-DEfG&quot;, &quot;abc1234&quot;, &quot;1231C34&quot;, &quot;ABC-1CE4&quot;})
+    @DisplayName(&quot;Validar PLACA erro&quot;)
+    void deveriaRetornarPlacaInvalida(String placa) {
+<span class="pc" id="L31">        Assertions.assertThrows(PlacaInvalidaException.class, () -&gt; validacaoPlaca.isPlacaValida(placa));</span>
+<span class="fc" id="L32">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="pt"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>VeiculoController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">All in projeto-final Coverage Results</a> &gt; <a href="index.source.html" class="el_package">br.com.ada.testeautomatizado.controller</a> &gt; <span class="el_source">VeiculoController.java</span></div><h1>VeiculoController.java</h1><pre class="source lang-java linenums">package br.com.ada.testeautomatizado.controller;
+
+import br.com.ada.testeautomatizado.dto.VeiculoDTO;
+import br.com.ada.testeautomatizado.model.Veiculo;
+import br.com.ada.testeautomatizado.service.VeiculoService;
+import br.com.ada.testeautomatizado.util.ResponseDTO;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+<span class="fc" id="L12">@Slf4j</span>
+@RestController //CRUD
+@RequestMapping(&quot;/veiculo&quot;)
+public class VeiculoController {
+
+    private final VeiculoService veiculoService;
+<span class="fc" id="L18">    public VeiculoController(VeiculoService veiculoService) {</span>
+<span class="fc" id="L19">        this.veiculoService = veiculoService;</span>
+<span class="fc" id="L20">    }</span>
+    
+    @PostMapping(&quot;/&quot;)   //C - CREATE
+    public ResponseEntity&lt;ResponseDTO&lt;VeiculoDTO&gt;&gt; cadastrar(@RequestBody VeiculoDTO veiculoDTO) {
+<span class="fc" id="L24">        return this.veiculoService.cadastrar(veiculoDTO);</span>
+    }
+    
+    @GetMapping(&quot;/todos&quot;)   //R - READ.All
+    public ResponseEntity&lt;ResponseDTO&lt;List&lt;Veiculo&gt;&gt;&gt; listarTodos(){
+<span class="fc" id="L29">        return this.veiculoService.listarTodos();</span>
+    }
+    
+    @GetMapping(&quot;/{placa}&quot;)   //R - READ
+    public ResponseEntity&lt;ResponseDTO&lt;Veiculo&gt;&gt; listarVeiculoPelaPlaca (@PathVariable(&quot;placa&quot;) String placa) {
+<span class="fc" id="L34">        return this.veiculoService.listarPelaPlaca(placa);</span>
+    }
+
+    @PutMapping(&quot;/&quot;)    //U - UPDATE
+    public ResponseEntity&lt;ResponseDTO&lt;VeiculoDTO&gt;&gt; atualizar(@RequestBody VeiculoDTO veiculoDTO) {
+<span class="fc" id="L39">        return this.veiculoService.atualizar(veiculoDTO);</span>
+    }
+    
+    @DeleteMapping(&quot;/{placa}&quot;)  //D - DELETE
+    public ResponseEntity&lt;ResponseDTO&lt;Boolean&gt;&gt; deletarVeiculoPelaPlaca(@PathVariable(&quot;placa&quot;) String placa) {
+<span class="fc" id="L44">        return this.veiculoService.deletarVeiculoPelaPlaca(placa);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -5,7 +5,7 @@ import br.com.ada.testeautomatizado.exception.PlacaInvalidaException;
 import br.com.ada.testeautomatizado.exception.VeiculoNaoEncontradoException;
 import br.com.ada.testeautomatizado.model.Veiculo;
 import br.com.ada.testeautomatizado.repository.VeiculoRepository;
-import br.com.ada.testeautomatizado.util.Response;
+import br.com.ada.testeautomatizado.util.ResponseDTO;
 import br.com.ada.testeautomatizado.util.ValidacaoPlaca;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -29,19 +29,19 @@ public class VeiculoService {
     }
     
     //C - CREATE
-    public ResponseEntity<Response<VeiculoDTO>> cadastrar(VeiculoDTO veiculoDTO) {
+    public ResponseEntity<ResponseDTO<VeiculoDTO>> cadastrar(VeiculoDTO veiculoDTO) {
         try {
             this.validacaoPlaca.isPlacaValida(veiculoDTO.getPlaca());
             Veiculo veiculo = VeiculoDTO.dtoToVeiculo(veiculoDTO);
             this.veiculoRepository.save(veiculo);
             return ResponseEntity.ok()
-                    .body(Response.<VeiculoDTO>builder()
+                    .body(ResponseDTO.<VeiculoDTO>builder()
                             .message("Sucesso")
                             .detail(veiculoDTO)
                             .build());
         } catch (PlacaInvalidaException placaInvalidaException) {
             return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
-                    .body(Response.<VeiculoDTO>builder()
+                    .body(ResponseDTO.<VeiculoDTO>builder()
                             .message(veiculoDTO.getPlaca() + placaInvalidaException.getMessage())
                             .detail(veiculoDTO)
                             .build());
@@ -49,49 +49,49 @@ public class VeiculoService {
     }
     
     //R - READ.All
-    public ResponseEntity<Response<List<Veiculo>>> listarTodos() {
+    public ResponseEntity<ResponseDTO<List<Veiculo>>> listarTodos() {
         //noinspection SpellCheckingInspection
         List<Veiculo> veiculos = this.veiculoRepository.findAll().stream().toList();
         return ResponseEntity.ok()
-                .body(Response.<List<Veiculo>>builder()
+                .body(ResponseDTO.<List<Veiculo>>builder()
                         .message("Sucesso")
                         .detail(veiculos)
                         .build());
     }
     
     //R - READ
-    public ResponseEntity<Response<Veiculo>> listarPelaPlaca(String placa) {
+    public ResponseEntity<ResponseDTO<Veiculo>> listarPelaPlaca(String placa) {
         try {
             Veiculo veiculo = this.veiculoRepository.findByPlaca(placa)
                     .orElseThrow(VeiculoNaoEncontradoException::new);
             return ResponseEntity.ok()
-                    .body(Response.<Veiculo>builder()
+                    .body(ResponseDTO.<Veiculo>builder()
                             .message("Sucesso")
                             .detail(veiculo)
                             .build());
         } catch (VeiculoNaoEncontradoException e) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                    .body(Response.<Veiculo>builder()
+                    .body(ResponseDTO.<Veiculo>builder()
                             .message(placa + e.getMessage())
                             .build());
         }
     }
     
     //U - UPDATE
-    public ResponseEntity<Response<VeiculoDTO>> atualizar(VeiculoDTO veiculoDTO) {
+    public ResponseEntity<ResponseDTO<VeiculoDTO>> atualizar(VeiculoDTO veiculoDTO) {
         try {
             this.veiculoRepository.findByPlaca(veiculoDTO.getPlaca())
                     .orElseThrow(VeiculoNaoEncontradoException::new);
             Veiculo veiculo = VeiculoDTO.dtoToVeiculo(veiculoDTO);
             this.veiculoRepository.save(veiculo);
             return ResponseEntity.ok()
-                    .body(Response.<VeiculoDTO>builder()
+                    .body(ResponseDTO.<VeiculoDTO>builder()
                             .message("Sucesso")
                             .detail(veiculoDTO)
                             .build());
         } catch (VeiculoNaoEncontradoException e) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                    .body(Response.<VeiculoDTO>builder()
+                    .body(ResponseDTO.<VeiculoDTO>builder()
                             .message(veiculoDTO.getPlaca() + e.getMessage())
                             .detail(veiculoDTO)
                             .build());
@@ -99,18 +99,18 @@ public class VeiculoService {
     }
     
     //D - DELETE
-    public ResponseEntity<Response<Boolean>> deletarVeiculoPelaPlaca(String placa) {
+    public ResponseEntity<ResponseDTO<Boolean>> deletarVeiculoPelaPlaca(String placa) {
         try {
             this.veiculoRepository.delete(buscarVeiculoPelaPlaca(placa)
                     .orElseThrow(VeiculoNaoEncontradoException::new));
             return ResponseEntity.ok()
-                    .body(Response.<Boolean>builder()
+                    .body(ResponseDTO.<Boolean>builder()
                             .message("Sucesso")
                             .detail(Boolean.TRUE)
                             .build());
         } catch (VeiculoNaoEncontradoException e) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT)
-                    .body(Response.<Boolean>builder()
+                    .body(ResponseDTO.<Boolean>builder()
                             .message(placa + e.getMessage())
                             .detail(Boolean.FALSE)
                             .build());
