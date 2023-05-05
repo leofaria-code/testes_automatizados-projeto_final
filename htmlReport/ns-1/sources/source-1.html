@@ -1,0 +1,147 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <title>Coverage Report > VeiculoController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">br.com.ada.testeautomatizado.controller</a>
+</div>
+
+<h1>Coverage Summary for Class: VeiculoController (br.com.ada.testeautomatizado.controller)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">VeiculoController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    33,3%
+  </span>
+  <span class="absValue">
+    (2/6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    33,3%
+  </span>
+  <span class="absValue">
+    (2/6)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package br.com.ada.testeautomatizado.controller;
+&nbsp;
+&nbsp;
+&nbsp;import br.com.ada.testeautomatizado.dto.VeiculoDTO;
+&nbsp;import br.com.ada.testeautomatizado.model.Veiculo;
+&nbsp;import br.com.ada.testeautomatizado.service.VeiculoService;
+&nbsp;import br.com.ada.testeautomatizado.util.ResponseDTO;
+&nbsp;import lombok.extern.slf4j.Slf4j;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.http.ResponseEntity;
+&nbsp;import org.springframework.web.bind.annotation.*;
+&nbsp;
+&nbsp;import java.util.List;
+<b class="fc">&nbsp;</b>
+&nbsp;@Slf4j
+&nbsp;@RestController
+<b class="fc">&nbsp;@RequestMapping(&quot;/veiculo&quot;)</b>
+&nbsp;public class VeiculoController {
+&nbsp;
+&nbsp;    @Autowired
+&nbsp;    private VeiculoService veiculoService;
+&nbsp;
+&nbsp;
+&nbsp;    @GetMapping(&quot;/todos&quot;)
+<b class="nc">&nbsp;    public ResponseEntity&lt;Response&lt;List&lt;Veiculo&gt;&gt;&gt; listarTodos(){</b>
+&nbsp;        return this.veiculoService.listarTodos();
+&nbsp;    }
+&nbsp;
+&nbsp;    @PostMapping(&quot;/&quot;)
+<b class="nc">&nbsp;    public ResponseEntity&lt;Response&lt;VeiculoDTO&gt;&gt; cadastrar(@RequestBody VeiculoDTO veiculoDTO) {</b>
+&nbsp;        return this.veiculoService.cadastrar(veiculoDTO);
+&nbsp;    }
+&nbsp;
+&nbsp;    @DeleteMapping(&quot;/{placa}&quot;)
+<b class="nc">&nbsp;    public ResponseEntity&lt;Response&lt;Boolean&gt;&gt; deletarVeiculoPelaPlaca(@PathVariable(&quot;placa&quot;) String placa) {</b>
+&nbsp;        return this.veiculoService.deletarVeiculoPelaPlaca(placa);
+&nbsp;    }
+&nbsp;
+&nbsp;    @PutMapping(&quot;/&quot;)
+<b class="nc">&nbsp;    public ResponseEntity&lt;Response&lt;VeiculoDTO&gt;&gt; atualizar(@RequestBody VeiculoDTO veiculoDTO) {</b>
+&nbsp;        return this.veiculoService.atualizar(veiculoDTO);
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-04-30 22:34</div>
+</div>
+</body>
+</html>

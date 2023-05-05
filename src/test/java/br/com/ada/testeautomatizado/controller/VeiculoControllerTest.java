@@ -5,7 +5,7 @@ import br.com.ada.testeautomatizado.exception.PlacaInvalidaException;
 import br.com.ada.testeautomatizado.exception.VeiculoNaoEncontradoException;
 import br.com.ada.testeautomatizado.model.Veiculo;
 import br.com.ada.testeautomatizado.repository.VeiculoRepository;
-import br.com.ada.testeautomatizado.util.Response;
+import br.com.ada.testeautomatizado.util.ResponseDTO;
 import br.com.ada.testeautomatizado.util.ValidacaoPlaca;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;
@@ -62,11 +62,11 @@ class VeiculoControllerTest {
                 .andReturn();
         String resultActual = mvcResult.getResponse().getContentAsString();
         
-        Response<VeiculoDTO> responseTest = Response.<VeiculoDTO>builder()
+        ResponseDTO<VeiculoDTO> responseDTOTest = ResponseDTO.<VeiculoDTO>builder()
                 .message("Sucesso")
                 .detail(veiculoDTO)
                 .build();
-        String responseExpected = mapper.writeValueAsString(responseTest);
+        String responseExpected = mapper.writeValueAsString(responseDTOTest);
 
         Assertions.assertEquals(responseExpected, resultActual);
 
@@ -91,11 +91,11 @@ class VeiculoControllerTest {
         
         String exceptionMSG = new PlacaInvalidaException().getMessage();
         
-        Response<VeiculoDTO> responseTest = Response.<VeiculoDTO>builder()
+        ResponseDTO<VeiculoDTO> responseDTOTest = ResponseDTO.<VeiculoDTO>builder()
                 .message(veiculoDTO.getPlaca() + exceptionMSG)
                 .detail(veiculoDTO)
                 .build();
-        String responseExpected = mapper.writeValueAsString(responseTest);
+        String responseExpected = mapper.writeValueAsString(responseDTOTest);
 
         Assertions.assertEquals(responseExpected, resultActual);
 
@@ -117,11 +117,11 @@ class VeiculoControllerTest {
         
         //noinspection SpellCheckingInspection
         List<Veiculo> veiculos = List.of(veiculoBD);
-        Response<List<Veiculo>> responseTest = Response.<List<Veiculo>>builder()
+        ResponseDTO<List<Veiculo>> responseDTOTest = ResponseDTO.<List<Veiculo>>builder()
                 .message("Sucesso")
                 .detail(veiculos)
                 .build();
-        String responseExpected = mapper.writeValueAsString(responseTest);
+        String responseExpected = mapper.writeValueAsString(responseDTOTest);
         
         Assertions.assertEquals(responseExpected, resultActual);
         
@@ -139,11 +139,11 @@ class VeiculoControllerTest {
                 .andReturn();
         String resultActual = mvcResult.getResponse().getContentAsString();
         
-        Response<Veiculo> responseTest = Response.<Veiculo>builder()
+        ResponseDTO<Veiculo> responseDTOTest = ResponseDTO.<Veiculo>builder()
                 .message("Sucesso")
                 .detail(veiculoBD)
                 .build();
-        String responseExpected = mapper.writeValueAsString(responseTest);
+        String responseExpected = mapper.writeValueAsString(responseDTOTest);
         
         Assertions.assertEquals(responseExpected, resultActual);
     }
@@ -163,10 +163,10 @@ class VeiculoControllerTest {
         
         String exceptionMSG = new VeiculoNaoEncontradoException().getMessage();
         
-        Response<Veiculo> responseTest = Response.<Veiculo>builder()
+        ResponseDTO<Veiculo> responseDTOTest = ResponseDTO.<Veiculo>builder()
                 .message(veiculoDTO.getPlaca() + exceptionMSG)
                 .build();
-        String responseExpected = mapper.writeValueAsString(responseTest);
+        String responseExpected = mapper.writeValueAsString(responseDTOTest);
         
         Assertions.assertEquals(responseExpected, resultActual);
         
@@ -192,11 +192,11 @@ class VeiculoControllerTest {
                 .andReturn();
         String resultActual = mvcResult.getResponse().getContentAsString();
         
-        Response<VeiculoDTO> responseTest = Response.<VeiculoDTO>builder()
+        ResponseDTO<VeiculoDTO> responseDTOTest = ResponseDTO.<VeiculoDTO>builder()
                 .message("Sucesso")
                 .detail(veiculoDTO)
                 .build();
-        String responseExpected = mapper.writeValueAsString(responseTest);
+        String responseExpected = mapper.writeValueAsString(responseDTOTest);
 
         Assertions.assertEquals(responseExpected, resultActual);
 
@@ -220,11 +220,11 @@ class VeiculoControllerTest {
         
         String exceptionMSG = new VeiculoNaoEncontradoException().getMessage();
         
-        Response<VeiculoDTO> responseTest = Response.<VeiculoDTO>builder()
+        ResponseDTO<VeiculoDTO> responseDTOTest = ResponseDTO.<VeiculoDTO>builder()
                 .message(veiculoDTO.getPlaca() + exceptionMSG)
                 .detail(veiculoDTO)
                 .build();
-        String responseExpected = mapper.writeValueAsString(responseTest);
+        String responseExpected = mapper.writeValueAsString(responseDTOTest);
         
         Assertions.assertEquals(responseExpected, resultActual);
         
@@ -243,11 +243,11 @@ class VeiculoControllerTest {
                 .andReturn();
         String resultActual = mvcResult.getResponse().getContentAsString();
         
-        Response<Boolean> responseTest = Response.<Boolean>builder()
+        ResponseDTO<Boolean> responseDTOTest = ResponseDTO.<Boolean>builder()
                 .message("Sucesso")
                 .detail(Boolean.TRUE)
                 .build();
-        String responseExpected = mapper.writeValueAsString(responseTest);
+        String responseExpected = mapper.writeValueAsString(responseDTOTest);
         
         Assertions.assertEquals(responseExpected, resultActual);
         
@@ -270,11 +270,11 @@ class VeiculoControllerTest {
         
         String exceptionMSG = new VeiculoNaoEncontradoException().getMessage();
         
-        Response<Boolean> responseTest = Response.<Boolean>builder()
+        ResponseDTO<Boolean> responseDTOTest = ResponseDTO.<Boolean>builder()
                 .message(veiculoDTO.getPlaca() + exceptionMSG)
                 .detail(Boolean.FALSE)
                 .build();
-        String responseExpected = mapper.writeValueAsString(responseTest);
+        String responseExpected = mapper.writeValueAsString(responseDTOTest);
         
         Assertions.assertEquals(responseExpected, resultActual);
         
