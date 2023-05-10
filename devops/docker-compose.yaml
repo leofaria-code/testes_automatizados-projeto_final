@@ -1,0 +1,31 @@
+version: '3'
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=teste12345
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/data
+
+  app:
+    image: leofaria-code/projeto-final:1.0.0
+    restart: always
+    container_name: app
+    depends_on:
+      - db
+    ports:
+      - '8082:8080'
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=teste12345
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+volumes:
+  db:
+    driver: local
