@@ -13,7 +13,7 @@ import java.util.List;
 @RestController //CRUD
 @RequestMapping("/veiculo")
 public class VeiculoController {
-
+    
     private final VeiculoService veiculoService;
     public VeiculoController(VeiculoService veiculoService) {
         this.veiculoService = veiculoService;

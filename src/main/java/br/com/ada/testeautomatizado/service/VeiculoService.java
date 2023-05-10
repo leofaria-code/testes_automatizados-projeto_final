@@ -18,6 +18,8 @@ import java.util.Optional;
 @Slf4j
 @Service
 public class VeiculoService {
+    
+    private static final String MSG_SUCESSO = "Sucesso";
 
     private final VeiculoRepository veiculoRepository;
 
@@ -36,7 +38,7 @@ public class VeiculoService {
             this.veiculoRepository.save(veiculo);
             return ResponseEntity.ok()
                     .body(ResponseDTO.<VeiculoDTO>builder()
-                            .message("Sucesso")
+                            .message(MSG_SUCESSO)
                             .detail(veiculoDTO)
                             .build());
         } catch (PlacaInvalidaException placaInvalidaException) {
@@ -50,11 +52,10 @@ public class VeiculoService {
     
     //R - READ.All
     public ResponseEntity<ResponseDTO<List<Veiculo>>> listarTodos() {
-        //noinspection SpellCheckingInspection
         List<Veiculo> veiculos = this.veiculoRepository.findAll().stream().toList();
         return ResponseEntity.ok()
                 .body(ResponseDTO.<List<Veiculo>>builder()
-                        .message("Sucesso")
+                        .message(MSG_SUCESSO)
                         .detail(veiculos)
                         .build());
     }
@@ -66,7 +67,7 @@ public class VeiculoService {
                     .orElseThrow(VeiculoNaoEncontradoException::new);
             return ResponseEntity.ok()
                     .body(ResponseDTO.<Veiculo>builder()
-                            .message("Sucesso")
+                            .message(MSG_SUCESSO)
                             .detail(veiculo)
                             .build());
         } catch (VeiculoNaoEncontradoException e) {
@@ -86,7 +87,7 @@ public class VeiculoService {
             this.veiculoRepository.save(veiculo);
             return ResponseEntity.ok()
                     .body(ResponseDTO.<VeiculoDTO>builder()
-                            .message("Sucesso")
+                            .message(MSG_SUCESSO)
                             .detail(veiculoDTO)
                             .build());
         } catch (VeiculoNaoEncontradoException e) {
@@ -105,7 +106,7 @@ public class VeiculoService {
                     .orElseThrow(VeiculoNaoEncontradoException::new));
             return ResponseEntity.ok()
                     .body(ResponseDTO.<Boolean>builder()
-                            .message("Sucesso")
+                            .message(MSG_SUCESSO)
                             .detail(Boolean.TRUE)
                             .build());
         } catch (VeiculoNaoEncontradoException e) {

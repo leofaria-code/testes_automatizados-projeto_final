@@ -31,9 +31,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class VeiculoControllerTest {
     
+    private static final String MSG_SUCESSO_EXPECTED = "Sucesso";
+    
     private final Veiculo veiculoBD = veiculoBD();
-    private final VeiculoDTO veiculoDTO = veiculoDTO();
-    private final VeiculoDTO veiculoAtualizadoDTO = veiculoAtualizadoDTO();
+    private final VeiculoDTO veiculoDTO = new VeiculoDTO(veiculoBD);
 
     @MockBean
     private ValidacaoPlaca validacaoPlaca;
@@ -54,6 +55,7 @@ class VeiculoControllerTest {
         Mockito.doCallRealMethod().when(validacaoPlaca).isPlacaValida(Mockito.anyString());
         
         String veiculoDTOstring = mapper.writeValueAsString(veiculoDTO);
+        
         MvcResult mvcResult = mockMvc.perform(post("/veiculo/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(veiculoDTOstring))
@@ -63,7 +65,7 @@ class VeiculoControllerTest {
         String resultActual = mvcResult.getResponse().getContentAsString();
         
         ResponseDTO<VeiculoDTO> responseDTOTest = ResponseDTO.<VeiculoDTO>builder()
-                .message("Sucesso")
+                .message(MSG_SUCESSO_EXPECTED)
                 .detail(veiculoDTO)
                 .build();
         String responseExpected = mapper.writeValueAsString(responseDTOTest);
@@ -103,7 +105,6 @@ class VeiculoControllerTest {
     
     @Test   //R - READ.All: Sucesso
     @DisplayName("Retorna todos os veículos")
-    @SuppressWarnings("SpellCheckingInspection")
     public void deveriaListarVeiculosSucesso() throws Exception {
         
         Mockito.when(veiculoRepository.findAll()).thenReturn(List.of(veiculoBD));
@@ -115,10 +116,9 @@ class VeiculoControllerTest {
                 .andReturn();
         String resultActual = mvcResult.getResponse().getContentAsString();
         
-        //noinspection SpellCheckingInspection
         List<Veiculo> veiculos = List.of(veiculoBD);
         ResponseDTO<List<Veiculo>> responseDTOTest = ResponseDTO.<List<Veiculo>>builder()
-                .message("Sucesso")
+                .message(MSG_SUCESSO_EXPECTED)
                 .detail(veiculos)
                 .build();
         String responseExpected = mapper.writeValueAsString(responseDTOTest);
@@ -130,6 +130,7 @@ class VeiculoControllerTest {
     @Test   //R - READ: Sucesso
     @DisplayName("Retorna um veículo específico")
     public void deveriaRetornarVeiculoPelaPlaca() throws Exception {
+        
         Mockito.when(veiculoRepository.findByPlaca(Mockito.anyString())).thenReturn(Optional.of(veiculoBD));
         
         MvcResult mvcResult = mockMvc.perform(get("/veiculo/{placa}", veiculoBD.getPlaca())
@@ -140,7 +141,7 @@ class VeiculoControllerTest {
         String resultActual = mvcResult.getResponse().getContentAsString();
         
         ResponseDTO<Veiculo> responseDTOTest = ResponseDTO.<Veiculo>builder()
-                .message("Sucesso")
+                .message(MSG_SUCESSO_EXPECTED)
                 .detail(veiculoBD)
                 .build();
         String responseExpected = mapper.writeValueAsString(responseDTOTest);
@@ -179,22 +180,26 @@ class VeiculoControllerTest {
         Mockito.doCallRealMethod().when(validacaoPlaca).isPlacaValida(Mockito.anyString());
         Mockito.when(veiculoRepository.findByPlaca(Mockito.anyString())).thenReturn(Optional.of(veiculoBD));
         
-        Veiculo veiculoAtualizadoBD = VeiculoDTO.dtoToVeiculo(veiculoAtualizadoDTO);
+        Veiculo veiculoAtualizadoBD = veiculoBD;
+        veiculoAtualizadoBD.setDisponivel(Boolean.FALSE);
+        
+        VeiculoDTO veiculoAtualizadoDTO = new VeiculoDTO(veiculoAtualizadoBD);
+        
         Mockito.when(veiculoRepository.save(Mockito.any(Veiculo.class))).thenReturn(veiculoAtualizadoBD);
         
-        String veiculoAtualizadoDTOstring = mapper.writeValueAsString(veiculoAtualizadoDTO);
+        String veiculoAtualizadostring = mapper.writeValueAsString(veiculoAtualizadoBD);
         
         MvcResult mvcResult = mockMvc.perform(put("/veiculo/")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(veiculoAtualizadoDTOstring))
+                        .content(veiculoAtualizadostring))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andReturn();
         String resultActual = mvcResult.getResponse().getContentAsString();
         
         ResponseDTO<VeiculoDTO> responseDTOTest = ResponseDTO.<VeiculoDTO>builder()
-                .message("Sucesso")
-                .detail(veiculoDTO)
+                .message(MSG_SUCESSO_EXPECTED)
+                .detail(veiculoAtualizadoDTO)
                 .build();
         String responseExpected = mapper.writeValueAsString(responseDTOTest);
 
@@ -205,9 +210,9 @@ class VeiculoControllerTest {
     @Test   //U - UPDATE: Erro, veículo não existe
     @DisplayName("Retorna No Content ao atualizar um veículo que não existe na base de dados")
     public void deveriaRetornarNoContentAtualizarVeiculo() throws Exception {
+    
         Mockito.when(veiculoRepository.findByPlaca(Mockito.anyString())).thenReturn(Optional.empty());
         
-//        veiculoDTO.setPlaca("PRL-1234");
         String veiculoDTOstring = mapper.writeValueAsString(veiculoDTO);
         
         MvcResult mvcResult = mockMvc.perform(put("/veiculo/")
@@ -234,9 +239,11 @@ class VeiculoControllerTest {
     @DisplayName("Deletar veículo pela placa com sucesso")
     void deveriaDeletarVeiculoPelaPlacaSucesso() throws Exception {
         
+        Mockito.doCallRealMethod().when(validacaoPlaca).isPlacaValida(Mockito.anyString());
+        
         Mockito.when(veiculoRepository.findByPlaca(Mockito.anyString())).thenReturn(Optional.of(veiculoBD));
         
-        MvcResult mvcResult = mockMvc.perform(delete("/veiculo/{placa}", "XYZ-4578")
+        MvcResult mvcResult = mockMvc.perform(delete("/veiculo/{placa}", veiculoBD.getPlaca())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -244,7 +251,7 @@ class VeiculoControllerTest {
         String resultActual = mvcResult.getResponse().getContentAsString();
         
         ResponseDTO<Boolean> responseDTOTest = ResponseDTO.<Boolean>builder()
-                .message("Sucesso")
+                .message(MSG_SUCESSO_EXPECTED)
                 .detail(Boolean.TRUE)
                 .build();
         String responseExpected = mapper.writeValueAsString(responseDTOTest);
@@ -258,6 +265,9 @@ class VeiculoControllerTest {
     public void deveriaRetornarNoContentDeletarVeiculo() throws Exception {
         
         veiculoDTO.setPlaca("PRL-1234");
+        
+        Mockito.doCallRealMethod().when(validacaoPlaca).isPlacaValida(Mockito.anyString());
+        
         String veiculoDTOstring = mapper.writeValueAsString(veiculoDTO);
         
         MvcResult mvcResult = mockMvc.perform(delete("/veiculo/{placa}", "PRL-1234")
@@ -291,18 +301,4 @@ class VeiculoControllerTest {
                 .build();
     }
     
-    private VeiculoDTO veiculoDTO(){
-        return veiculoDtoGerado(veiculoBD);
-    }
-    
-    private static VeiculoDTO veiculoDtoGerado(Veiculo veiculo) {
-        return VeiculoDTO.veiculoToDTO(veiculo);
-    }
-    
-    private VeiculoDTO veiculoAtualizadoDTO(){
-        VeiculoDTO veiculoAtualizadoDTO = veiculoDTO;
-        veiculoAtualizadoDTO.setDisponivel(Boolean.FALSE);
-        return veiculoAtualizadoDTO;
-    }
-
 }

@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @NoArgsConstructor @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Veiculo {
+    
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
