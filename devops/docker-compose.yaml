@@ -10,10 +10,10 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - db:/data
+      - db:/var/lib/postgresql/data
 
   app:
-    image: leofaria-code/projeto-final:1.0.0
+    image: docker.io/leofaria-code/testes_automatizados-projeto_final
     restart: always
     container_name: app
     depends_on:
