@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="leofaria-code-testes_automatizados-projeto_final" type="docker-deploy" factoryName="docker-image" singleton="false" server-name="Docker">
+    <deployment type="docker-image">
+      <settings>
+        <option name="imageTag" value="leofaria-code/testes_automatizados-projeto_final:latest" />
+        <option name="containerName" value="leofaria-code-testes_automatizados-projeto_final" />
+      </settings>
+    </deployment>
+    <method v="2" />
+  </configuration>
+</component>
